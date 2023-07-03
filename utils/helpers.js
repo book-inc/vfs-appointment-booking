@@ -21,3 +21,24 @@ export const waitUntilPageLoadingFinished = async (driver) => {
 
   await driver.wait(until.elementIsNotVisible(overlay));
 };
+
+export const findElementByText = async (text, driver, restrictionString) => {
+  if (!restrictionString) {
+    return await driver.findElement(
+      By.xpath(`//*[contains(text(),'${text}')]`)
+    );
+  }
+
+  return await driver.findElement(
+    By.xpath(
+      `//*[contains(text(),'${text}')][not(contains(text(),'${restrictionString}'))]`
+    )
+  );
+};
+
+export const getParent = async (targetElement, driver) => {
+  return await driver.executeScript(
+    "return arguments[0].parentNode;",
+    targetElement
+  );
+};
