@@ -10,6 +10,7 @@ import {
 import { startBooking } from "./pages/start-booking.js";
 import { appointmentDetails } from "./pages/appointment-details.js";
 import { login } from "./pages/login.js";
+import { yourDetails } from "./pages/your-details.js";
 
 config();
 
@@ -40,6 +41,8 @@ async function launchSelenium() {
   await startBooking(driver);
 
   await appointmentDetails(driver);
+
+  await yourDetails(driver);
 
   // driver.quit();
 }
