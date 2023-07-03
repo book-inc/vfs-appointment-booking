@@ -1,0 +1,6 @@
+node_modules/
+.idea
+.vscode
+.Ds_Store
+.env
+index.html
