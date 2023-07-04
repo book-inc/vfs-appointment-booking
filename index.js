@@ -9,6 +9,10 @@ import { login } from "./pages/login.js";
 import { yourDetails } from "./pages/your-details.js";
 import cron from "node-cron";
 import { Type } from "selenium-webdriver/lib/proxy.js";
+import { bookAppointment } from "./pages/book-appointment.js";
+import { services } from "./pages/services.js";
+import { insurance } from "./pages/insurance.js";
+import { review } from "./pages/review.js";
 
 config();
 
@@ -53,6 +57,14 @@ async function launchSelenium() {
     await appointmentDetails(driver);
 
     await yourDetails(driver);
+
+    await bookAppointment(driver);
+
+    await services(driver);
+
+    await insurance(driver);
+
+    await review(driver);
   } catch (err) {
     console.error(err);
     // driver.quit();

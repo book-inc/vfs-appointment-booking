@@ -71,6 +71,28 @@ export const yourDetails = async (driver) => {
     .findElement(By.xpath(`//*[@id="mat-input-7"]`))
     .sendKeys(process.env.EMAIL);
 
-  // need to wait 30secs. It's a restriction by website
-  return await sleep(30000);
+  console.log("Need to wait 30secs. It's a restriction by the  website");
+  // need to wait 30secs. It's a restriction by the website
+  await sleep(30000);
+
+  await driver
+    .findElement(
+      By.xpath(
+        "/html/body/app-root/div/app-applicant-details/section/mat-card[2]/app-dynamic-form/div/div/app-dynamic-control/div/div/div[2]/button"
+      )
+    )
+    .click();
+  console.log("Submit your details");
+
+  await waitUntilPageLoadingFinished(driver);
+
+  console.log("Continue to next step");
+
+  return await driver
+    .findElement(
+      By.xpath(
+        "/html/body/div[6]/div[2]/div/mat-dialog-container/app-same-passport-modal/div/div[2]/div/button"
+      )
+    )
+    .click();
 };
