@@ -2,6 +2,7 @@ import { By } from "selenium-webdriver";
 import {
   findElementByText,
   getParent,
+  sleep,
   waitUntilPageLoadingFinished,
 } from "../utils/helpers.js";
 
@@ -26,23 +27,24 @@ export const yourDetails = async (driver) => {
   const genderOption = await getParent(genderOptionSpan, driver);
   await genderOption.click();
 
-  await waitUntilPageLoadingFinished(driver);
-
   // Date of birth
   await driver
     .findElement(By.xpath(`//*[@id="dateOfBirth"]`))
     .sendKeys(process.env.DATE_OF_BIRTH);
 
   // nationality
-  await driver.findElement(By.xpath(`//*[@id="mat-select-6"]`)).click();
+  await driver.findElement(By.xpath(`//*[@id="mat-select-8"]`)).click();
   const nationalityOptionSpan = await findElementByText(
     process.env.NATIONALITY,
     driver
   );
   const nationalityOption = await getParent(nationalityOptionSpan, driver);
+  // scroll into needed option, otherwise click will be intercepted by overlay
+  await driver.executeScript(
+    "arguments[0].scrollIntoView(true);",
+    nationalityOption
+  );
   await nationalityOption.click();
-
-  await waitUntilPageLoadingFinished(driver);
 
   // passport
   await driver
@@ -65,7 +67,10 @@ export const yourDetails = async (driver) => {
     .sendKeys(process.env.PHONE_NUMBER);
 
   // email
-  return await driver
+  await driver
     .findElement(By.xpath(`//*[@id="mat-input-7"]`))
     .sendKeys(process.env.EMAIL);
+
+  // need to wait 30secs. It's a restriction by website
+  return await sleep(30000);
 };
