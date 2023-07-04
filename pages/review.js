@@ -1,19 +1,18 @@
 import { By } from "selenium-webdriver";
-import { waitUntilPageLoadingFinished } from "../utils/helpers.js";
+import {
+  waitUntilPageLoadingFinished,
+  waitUntilTextOnPage,
+} from "../utils/helpers.js";
 
 export const review = async (driver) => {
   console.log("Load review page");
 
   await waitUntilPageLoadingFinished(driver);
 
+  await waitUntilTextOnPage("I accept the Terms and Conditions", driver);
+
   // accept terms
-  await driver
-    .findElement(
-      By.xpath(
-        "/html/body/app-root/div/app-review-and-payment/section/form/mat-card[1]/div[8]/div/mat-checkbox"
-      )
-    )
-    .click();
+  await driver.findElement(By.id("mat-checkbox-3")).click();
 
   // submit
   await driver

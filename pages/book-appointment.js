@@ -1,5 +1,6 @@
 import { By } from "selenium-webdriver";
 import {
+  findElementByText,
   waitUntilPageLoadingFinished,
   waitUntilTextOnPage,
 } from "../utils/helpers.js";
@@ -10,11 +11,12 @@ export const bookAppointment = async (driver) => {
   await waitUntilPageLoadingFinished(driver);
 
   // select date
-  await driver
-    .findElement(By.className("fc-day-future.date-availiable"))
-    .click();
+  const dateOption = await driver.findElement(
+    By.className("fc-day-future date-availiable")
+  );
+  await dateOption.click();
 
-  await waitUntilTextOnPage("Choose an appointment time");
+  await waitUntilTextOnPage("Choose an appointment time", driver);
 
   // select time
   await driver.findElement(By.id("STRadio1")).click();

@@ -46,6 +46,9 @@ async function launchSelenium() {
   try {
     // Navigate to Url
     await driver.get(process.env.WEBSITE_URL);
+    // await driver.get(
+    //   "file:///Users/sergeybukin/Desktop/Book appointment _ VFS Global.html"
+    // );
 
     // wait for all elements presented, including 2Captcha solver
     await waitUntilTextOnPage("Solve with 2Captcha", driver);

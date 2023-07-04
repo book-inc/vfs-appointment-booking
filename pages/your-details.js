@@ -91,7 +91,7 @@ export const yourDetails = async (driver) => {
   return await driver
     .findElement(
       By.xpath(
-        "/html/body/div[6]/div[2]/div/mat-dialog-container/app-same-passport-modal/div/div[2]/div/button"
+        "/html/body/app-root/div/app-applicant-details/section/mat-card[2]/div/div[2]/button"
       )
     )
     .click();
