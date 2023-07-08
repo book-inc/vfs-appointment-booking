@@ -1,5 +1,6 @@
 import { By } from "selenium-webdriver";
-import { waitUntilPageLoadingFinished } from "../utils/helpers.js";
+import { sleep, waitUntilPageLoadingFinished } from "../utils/helpers.js";
+import { postBot } from "../telegram.js";
 
 export const insurance = async (driver) => {
   console.log("Load insurance page");
@@ -7,6 +8,10 @@ export const insurance = async (driver) => {
   await waitUntilPageLoadingFinished(driver);
 
   console.log("Continue to next step");
+
+  await postBot("hey");
+
+  await sleep(10000000);
 
   await driver
     .findElement(

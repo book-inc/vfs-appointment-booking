@@ -20,6 +20,7 @@
     "node-cron": "^3.0.2",
     "node-fetch": "^3.3.1",
     "prettier": "^2.8.8",
+    "selenium-stealth": "^1.0.1",
     "selenium-webdriver": "^4.0.0-rc-1"
   }
 }
