@@ -1,9 +1,8 @@
 import "chromedriver";
 import { config } from "dotenv";
-import { Builder } from "selenium-webdriver";
+import { Builder, By } from "selenium-webdriver";
 import chrome from "selenium-webdriver/chrome.js";
 import {
-  getRandomIp,
   sleep,
   waitUntilPageLoadingFinished,
   waitUntilTextOnPage,
@@ -16,40 +15,36 @@ import { bookAppointment } from "./pages/book-appointment.js";
 import { services } from "./pages/services.js";
 import { insurance } from "./pages/insurance.js";
 import { review } from "./pages/review.js";
-import { PageLoadStrategy } from "selenium-webdriver/lib/capabilities.js";
-import { postBot } from "./telegram.js";
-import SeleniumStealth from "selenium-stealth";
+import { payment } from "./pages/payment.js";
+import { postBot } from "./services/telegram-requests.js";
+import { sendScreenshot } from "./services/send-screenshot.js";
 
-let quit = true;
+let readyForPayment = false;
+let proxy_count = 0;
+
 config();
 
-const PROXIES = [
-  "185.15.172.212:3128",
-  "109.195.230.143:8080",
-  "217.175.39.90:8080",
-  "145.255.30.241:8088",
+const PROXIES_RU = [
+  "45.139.111.234:8000",
+  "45.139.108.225:8000",
+  "45.139.108.49:8000",
+  "45.139.109.215:8000",
+  "45.130.69.73:8000",
+  "45.133.33.5:8000",
 ];
 
-const PROXIES_RU = ["45.130.69.73:8000"];
-// 47.251.48.42:8888
-
 const errorNotificationText = "Please try again in another 2 hours";
-const PAGE_TIMEOUT = 30000;
+const PAGE_TIMEOUT = 20000;
 
 async function launchSelenium() {
-  // getting random ip
-  // const proxy = await getRandomIp();
-  const proxy = "45.130.69.73:8000";
+  const proxy = PROXIES_RU[proxy_count];
   //
+  proxy_count = proxy_count >= PROXIES_RU.length - 1 ? 0 : proxy_count + 1;
   console.log(`Launching Browser instance over proxy: ${proxy}`);
   // set up browser
   const options = await new chrome.Options();
   await options.addArguments("start-maximized");
-  // await options.excludeSwitches([
-  //   "enable-automation",
-  //   "useAutomationExtension",
-  // ]);
-  // await options.addArguments("--disable-blink-features=AutomationControlled");
+
   // add proxy
   await options.addArguments(`--proxy-server=https://${proxy}`);
   await options.setProxy({
@@ -65,29 +60,16 @@ async function launchSelenium() {
     "user-data-dir=/Users/sergeybukin/Library/Application Support/Google/Chrome/Profile 3"
   );
   await options.addArguments("--profile-directory=Profile 3");
-  // await options.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
   let driver = await new Builder()
     .forBrowser("chrome")
     .setChromeOptions(options)
     .build();
 
-  // const seleniumStealth = new SeleniumStealth(driver);
-  //
-  // await seleniumStealth.stealth({
-  //   languages: ["en-US", "en"],
-  //   vendor: "Google Inc.",
-  //   platform: "Win32",
-  //   webglVendor: "Intel Inc.",
-  //   renderer: "Intel Iris OpenGL Engine",
-  //   fixHairline: true,
-  // });
-  // await driver.manage().deleteAllCookies();
-
   try {
     // Navigate to Url
     await driver.get(process.env.WEBSITE_URL);
-
+    // await driver.get("file:///Users/sergeybukin/Desktop/Tinkoff%20Secure.html");
     await waitUntilTextOnPage("Sign in", driver, PAGE_TIMEOUT);
 
     // wait for all elements presented, including 2Captcha solver
@@ -108,12 +90,25 @@ async function launchSelenium() {
     await services(driver);
 
     await insurance(driver);
-    quit = false;
 
     await review(driver);
+    readyForPayment = true;
+
+    await payment(driver);
   } catch (err) {
     console.error(err);
-    if (quit) {
+    if (!readyForPayment) {
+      driver.quit();
+      await sleep(5000);
+
+      await launchSelenium();
+    } else {
+      await postBot(
+        "Sorry, cannot proceed with the payment. Probably at the moment there are no available dates"
+      );
+
+      await sendScreenshot(driver, "error.png");
+
       driver.quit();
       await sleep(5000);
 
@@ -125,8 +120,3 @@ async function launchSelenium() {
 (async function main() {
   await launchSelenium();
 })();
-//
-// cron.schedule("* * * * *", async () => {
-//   console.log("running a task every minute");
-//   await launchSelenium();
-// });

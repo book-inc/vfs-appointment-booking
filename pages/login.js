@@ -1,7 +1,7 @@
 import { By } from "selenium-webdriver";
 import { sleep, waitUntilTextInElement } from "../utils/helpers.js";
 
-const CAPTCHA_SOLVING_TIMEOUT = 20000;
+const CAPTCHA_SOLVING_TIMEOUT = 30000;
 
 export const login = async (driver) => {
   await driver.findElement(By.id("mat-input-0")).sendKeys(process.env.EMAIL);

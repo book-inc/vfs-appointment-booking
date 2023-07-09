@@ -6,7 +6,17 @@ export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+export const waitUtilElement = async (
+  driver,
+  elementIdentifier,
+  timeout = 2000
+) => {
+  return await driver.wait(until.elementLocated(elementIdentifier), timeout);
+};
+
 export const waitUntilTextOnPage = async (text, driver, timeout) => {
+  await waitUtilElement(driver, By.tagName("html"), 4000);
+
   const html = await driver.findElement(By.tagName("html"));
 
   return await driver.wait(until.elementTextContains(html, text), timeout);
@@ -55,4 +65,23 @@ export const getRandomIp = async () => {
   const index = getRandomArbitrary(0, list.length);
 
   return list[index];
+};
+
+export const forceDropdown = async (
+  driver,
+  selectBox,
+  optionText,
+  excludeString
+) => {
+  // open dropdown
+  await selectBox.click();
+
+  // select option
+  const optionSpan = await findElementByText(optionText, driver, excludeString);
+  const optionParent = await getParent(optionSpan, driver);
+  await driver.executeScript(
+    "arguments[0].scrollIntoView(true);",
+    optionParent
+  );
+  return await optionParent.click();
 };

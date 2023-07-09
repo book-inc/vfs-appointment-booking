@@ -9,7 +9,10 @@ export const review = async (driver) => {
 
   await waitUntilPageLoadingFinished(driver);
 
-  await waitUntilTextOnPage("I accept the Terms and Conditions", driver);
+  await waitUntilTextOnPage(
+    "Yes, I agree to receive future communication on optional value added services offered by VFS Global",
+    driver
+  );
 
   // accept terms
   await driver.findElement(By.id("mat-checkbox-3")).click();
