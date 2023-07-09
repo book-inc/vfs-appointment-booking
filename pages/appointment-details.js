@@ -84,7 +84,11 @@ export const appointmentDetails = async (driver) => {
   }
 
   // sending message to telegram bot
-  await postBot(message.toString());
+  await postBot(
+    `There are an appointment slot for ${
+      visaCenters[counter - 1]
+    }: ${message.toString()}`
+  );
 
   console.log("submit appointment details");
 

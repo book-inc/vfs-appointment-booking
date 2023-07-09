@@ -25,12 +25,19 @@ let proxy_count = 0;
 config();
 
 const PROXIES_RU = [
-  "45.139.111.234:8000",
-  "45.139.108.225:8000",
-  "45.139.108.49:8000",
+  // "45.139.111.234:8000",
+  // "45.139.108.225:8000",
+  // "45.139.108.49:8000",
+  // "45.130.69.73:8000",
+  // "45.133.33.5:8000",
+  // "193.31.101.237:9241",
+  "193.31.102.151:9773",
   "45.139.109.215:8000",
-  "45.130.69.73:8000",
-  "45.133.33.5:8000",
+  "193.31.102.100:9247",
+  "193.31.100.222:9188",
+  "193.31.102.156:9713",
+  "193.31.103.42:9858",
+  "193.31.100.250:9703",
 ];
 
 const errorNotificationText = "Please try again in another 2 hours";
@@ -69,7 +76,6 @@ async function launchSelenium() {
   try {
     // Navigate to Url
     await driver.get(process.env.WEBSITE_URL);
-    // await driver.get("file:///Users/sergeybukin/Desktop/Tinkoff%20Secure.html");
     await waitUntilTextOnPage("Sign in", driver, PAGE_TIMEOUT);
 
     // wait for all elements presented, including 2Captcha solver

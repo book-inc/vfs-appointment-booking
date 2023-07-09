@@ -1,12 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import { By } from "selenium-webdriver";
-import {
-  findElementByText,
-  getParent,
-  sleep,
-  waitUntilTextOnPage,
-  waitUtilElement,
-} from "../utils/helpers.js";
+import { findElementByText, sleep, waitUtilElement } from "../utils/helpers.js";
 import { sendScreenshot } from "./send-screenshot.js";
 
 const cvcCatch = async (bot, driver, msg) => {
