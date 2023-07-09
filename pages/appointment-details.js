@@ -61,15 +61,6 @@ export const appointmentDetails = async (driver) => {
   const visaSubCategorySelect = await driver.findElement(
     By.xpath(`${formPath}/div[3]/mat-form-field`)
   );
-  //
-  // await visaCenters.forEach(async () => {
-  //   return await checkDates(
-  //     driver,
-  //     visaCenterSelect,
-  //     visaCategorySelect,
-  //     visaSubCategorySelect
-  //   );
-  // });
 
   let isSlotsAvailable = false;
   let message = "";
@@ -88,66 +79,6 @@ export const appointmentDetails = async (driver) => {
     counter++;
   }
 
-  // // select visa center
-  // await driver
-  //   .findElement(By.xpath(`${formPath}/div[1]/mat-form-field`))
-  //   .click();
-  //
-  // const centerOptionSpan = await findElementByText(
-  //   process.env.VISA_CENTER,
-  //   driver
-  // );
-  // const centerOption = await getParent(centerOptionSpan, driver);
-  // await driver.executeScript(
-  //   "arguments[0].scrollIntoView(true);",
-  //   centerOption
-  // );
-  // await centerOption.click();
-
-  // await waitUntilPageLoadingFinished(driver);
-
-  // select visa category
-  // await driver
-  //   .findElement(By.xpath(`${formPath}/div[2]/mat-form-field`))
-  //   .click();
-  // const categoryOptionSpan = await findElementByText(
-  //   process.env.VISA_CATEGORY,
-  //   driver
-  // );
-  // const categoryOption = await getParent(categoryOptionSpan, driver);
-  // await categoryOption.click();
-  //
-  // await waitUntilPageLoadingFinished(driver);
-  //
-  // // select visa sub-category
-  // await driver
-  //   .findElement(By.xpath(`${formPath}/div[3]/mat-form-field`))
-  //   .click();
-  //
-  // const excludeString = "PRIME TIME";
-  // const subCategoryOptionSpan = await findElementByText(
-  //   process.env.VISA_SUBCATEGORY,
-  //   driver,
-  //   excludeString
-  // );
-  //
-  // const subCategoryOption = await getParent(subCategoryOptionSpan, driver);
-  // await driver.executeScript(
-  //   "arguments[0].scrollIntoView(true);",
-  //   subCategoryOption
-  // );
-  //
-  // await subCategoryOption.click();
-  //
-  // await waitUntilPageLoadingFinished(driver);
-  //
-  // // checks is there are numbers in message with available slots
-  // const message = await driver
-  //   .findElement(By.xpath(`${formPath}/div[4]/div`))
-  //   .getText();
-  // const isSlotsAvailable = isNumberInString(message);
-
-  // if no slots, will check PRIME TIME visas, if already checked for prime - quit
   if (!isSlotsAvailable) {
     throw new Error();
   }
